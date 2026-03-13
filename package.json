@@ -1,0 +1,12 @@
+{
+  "name": "script-user-network",
+  "version": "1.0.0",
+  "description": "WebSocket server for script user visibility network",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "ws": "^8.14.2"
+  }
+}
