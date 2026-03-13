@@ -1,12 +1,14 @@
 {
-  "name": "script-user-network",
+  "name": "trulys-ws-min",
   "version": "1.0.0",
-  "description": "WebSocket server for script user visibility network",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node index.js"
   },
   "dependencies": {
-    "ws": "^8.14.2"
+    "ws": "^8.18.0"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }
