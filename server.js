@@ -7,31 +7,42 @@ const wss = new WebSocket.Server({ server });
 const clients = new Set();
 
 wss.on('connection', (ws) => {
-  clients.add(ws);
   console.log('Client connected');
+  clients.add(ws);
 
   ws.on('message', (message) => {
     try {
-      const data = JSON.parse(message);
-      if (data.secret !== process.env.SECRET) {
-        ws.close();
+      const data = JSON.parse(message.toString());
+
+      // Secret check
+      if (!data.secret || data.secret !== process.env.SECRET) {
+        console.log('Invalid or missing secret - closing connection');
+        ws.close(1008, 'Invalid secret');
         return;
       }
-      // Broadcast to all other clients
-      clients.forEach(client => {
-        if (client !== ws && client.readyState === WebSocket.OPEN) {
+
+      // Broadcast to ALL clients (including sender)
+      clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN) {
           client.send(message);
         }
       });
-    } catch {}
+    } catch (err) {
+      console.error('Error processing message:', err.message);
+    }
   });
 
   ws.on('close', () => {
-    clients.delete(ws);
     console.log('Client disconnected');
+    clients.delete(ws);
+  });
+
+  ws.on('error', (err) => {
+    console.error('WebSocket error:', err.message);
   });
 });
 
-server.listen(process.env.PORT || 10000, () => {
-  console.log('WebSocket server running');
+const PORT = process.env.PORT || 10000;
+server.listen(PORT, () => {
+  console.log(`WebSocket server listening on port ${PORT}`);
 });
