@@ -1,6 +1,7 @@
 {
-  "name": "trulys-ws-min",
+  "name": "trulys-highlight-server",
   "version": "1.0.0",
+  "description": "WebSocket broadcast server for Trulys user highlighting",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
